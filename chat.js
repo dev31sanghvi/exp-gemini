@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import readline from 'readline';
 dotenv.config();
 import * as fs from "fs"
+import fetch from 'node-fetch'; 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI=new GoogleGenerativeAI(process.env.API_KEY);
@@ -27,12 +28,17 @@ async function start(){
             if(msg.toLowerCase()==="exit"){
                 rl.close();
             }else{
+                try{
                 const result=await chat.sendMessage(msg);
                 const response=await result.response;
                 const text=await response.text();
 
                 console.log("Dev's Gemini:",text);
                 askAndRespond();
+                }catch(error){
+                    console.log("Error:",error);
+                }
+
 
             }
         })
